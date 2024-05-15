@@ -1,0 +1,23 @@
+#Versão da imagem python, que guardará a aplicação
+FROM python:3.12
+
+
+#Diretório onde está a aplicação 
+WORKDIR /Dockerfile
+
+
+#Comando para instalação do "requirements.txt"
+RUN --mount=type=cache,target=/root/.cache/pip \
+    --mount=type=bind,source=requirements.txt,target=requirements.txt \
+    python3 -m pip install -r requirements.txt
+
+
+#Copiando o diretório local para o da imagem
+COPY . .
+
+#Expondo a porta 5000, que é a porta padrão de uma aplicação em flask
+EXPOSE 5000
+
+
+#Comando para iniciar a aplicação
+CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0"]
